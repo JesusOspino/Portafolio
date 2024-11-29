@@ -1,4 +1,6 @@
 ---
+import Header from "../components/Header.astro";
+
 interface Props {
 	title: string;
 }
@@ -12,15 +14,53 @@ const { title } = Astro.props;
 		<meta charset="UTF-8" />
 		<meta name="description" content="Astro description" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/webp" href="/images/logos/icon-f.webp" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
 	<body>
+		<Header />
 		<slot />
 	</body>
 </html>
+
+<script>
+	window.addEventListener("scroll", () => {
+		const sections = document.querySelectorAll("section");
+		const links = document.querySelectorAll("nav a");
+
+		let currentSection: any = "";
+
+		sections.forEach((section) => {
+			const sectionTop = section.offsetTop;
+			const sectionHeight = section.offsetHeight;
+
+			if (
+				window.scrollY >= sectionTop - sectionHeight / 2 &&
+				window.scrollY < sectionTop + sectionHeight
+			) {
+				currentSection = section.getAttribute("id");
+			}
+		});
+
+		links.forEach((link) => {
+			if (link.getAttribute("href")?.slice(1) === currentSection) {
+				link.classList.add("menu-active");
+			} else {
+				link.classList.remove("menu-active");
+			}
+		});
+	});
+</script>
+
 <style is:global>
+	@font-face {
+		font-family: Montserrat;
+		src: url("/fonts/Montserrat-Regular.ttf") format("truetype");
+		font-style: normal;
+		font-display: swap;
+	}
+
 	:root {
 		--accent: 136, 58, 234;
 		--accent-light: 224, 204, 250;
@@ -33,18 +73,38 @@ const { title } = Astro.props;
 		);
 	}
 	html {
-		font-family: system-ui, sans-serif;
-		background: #13151a;
+		font-family: Montserrat;
+		scroll-behavior: smooth;
 	}
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
+
+	.container {
+		@apply w-full px-2 mx-auto;
+		@apply md:w-[90%] md:px-0;
+	}
+
+	.section-page {
+		@apply w-full md:w-full pb-[70px] md:pt-[70px] md:pb-0;
+	}
+
+	.section-page-margen {
+		@apply pt-[50px];
+	}
+
+	.content-title {
+		@apply px-[25px] mx-auto w-fit border-b-2 border-secondary border-solid;
+	}
+
+	.content-title-2 {
+		@apply md:w-full p-0;
+	}
+
+	.content-title-2 .title,
+	.content-title .title {
+		@apply text-[20px] sm:text-[22px] text-primary font-extrabold;
+	}
+
+	.menu-active {
+		@apply bg-secondary text-white;
+		@apply md:border-b-2 md:border-secondary md:border-solid md:bg-transparent md:text-primary;
 	}
 </style>

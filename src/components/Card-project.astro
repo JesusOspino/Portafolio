@@ -1,0 +1,83 @@
+---
+import { Image } from "astro:assets";
+import Tag from "./Tag.astro";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+	title: string;
+	image: string;
+	tegnologies: any[];
+	href?: string;
+	github?: string;
+	className?: string;
+	type: string;
+}
+
+const { className, title, image, tegnologies, href, github, type } =
+	Astro.props;
+---
+
+<span class={`card ${className}`} data-type={type}>
+	<div class="image" style={`background-image: url(${image});`}></div>
+	<div class="p-3">
+		<h6 class="text-[14px] lg:text-[16px] text-primary font-bold">
+			{title}
+		</h6>
+		<div class="flex justify-start items-center gap-2 mt-2">
+			{
+				tegnologies.map((x) => (
+					<Tag title={x.title} image={x.image} width={x.width} />
+				))
+			}
+		</div>
+
+		<div class="flex justify-end items-center gap-3 mt-2">
+			{
+				github ? (
+					<a
+						href={github}
+						target="_blank"
+						rel="noopener noreferer"
+						class="flex justify-center items-center gap-1 bg-secondary rounded-md px-2 py-1 text-white text-[12px] font-bold cursor-pointer"
+					>
+						<Icon name="github" class="text-white" />
+						Code
+					</a>
+				) : (
+					""
+				)
+			}
+
+			{
+				href ? (
+					<a
+						href={href}
+						target="_blank"
+						rel="noopener noreferer"
+						class="flex justify-center items-center gap-1 bg-secondary rounded-md px-2 py-1 text-white text-[12px] font-bold cursor-pointer"
+					>
+						<Image
+							src="/images/icons/link.svg"
+							alt="icon"
+							width={15}
+							height={15}
+						/>
+						Preview
+					</a>
+				) : (
+					""
+				)
+			}
+		</div>
+	</div>
+</span>
+
+<style>
+	.card {
+		@apply p-0 rounded-md shadow-xl transition-all duration-300 ease-linear bg-white;
+
+		.image {
+			@apply bg-no-repeat bg-center bg-cover w-full h-[220px] rounded-t-md;
+		}
+	}
+</style>

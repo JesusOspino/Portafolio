@@ -1,0 +1,143 @@
+---
+import { tags } from "../helpers/tagsList.ts";
+import CardProject from "./Card-project.astro";
+
+const projects = [
+    {
+        id: 1,
+        title: "Plataforma educativa “Egresados”",
+        type: "fullstack",
+        image: "/images/projects/app-egresados.svg",
+        tegnologies: [tags.angular, tags.csharp, tags.sqlserver],
+        href: "https://www.egresados.com.co/",
+    },
+    {
+        id: 2,
+        title: "Página web “Egresados”",
+        type: "frontend",
+        image: "/images/projects/page-egresados.svg",
+        tegnologies: [tags.nextjs, tags.tailwind],
+        href: "https://www.egresados.com.co/",
+    },
+    {
+        id: 2,
+        title: "Proyectos y Planes Inmobiliarios",
+        type: "fullstack",
+        image: "/images/projects/inmobiliaria.svg",
+        tegnologies: [tags.mongodb, tags.nestjs, tags.tailwind, tags.angular],
+        href: "https://www.proyectosyplanesinmobiliarios.co/",
+    },
+    {
+        id: 3,
+        title: "Pagina web Colegio Juan XXIII",
+        type: "backend",
+        image: "/images/projects/juanxxiii.svg",
+        tegnologies: [tags.mongodb, tags.nestjs],
+        href: "https://ietjuanxxiii.edu.co/",
+    },
+    {
+        id: 4,
+        title: "Pagina web Santa Rosa de Lima",
+        type: "backend",
+        image: "/images/projects/santaRosa.svg",
+        tegnologies: [tags.mongodb, tags.nestjs],
+        href: "https://santarosadelimacolegio.edu.co/",
+    },
+];
+---
+
+<div class="flex flex-col gap-3">
+    <div class="container">
+        <div class="content-title">
+            <h5 class="title">Mis Proyectos</h5>
+        </div>
+
+        <div class="flex justify-start items-center mt-6">
+            <div class="buttons-menu">
+                <button
+                    id="btnAll"
+                    data-filtro="todos"
+                    class="filter-btn-active"
+                >
+                    Todos
+                </button>
+                <button id="btnBack" data-filtro="backend"> BackEnd </button>
+                <button id="btnFront" data-filtro="frontend"> FrontEnd </button>
+                <button id="btnFull" data-filtro="fullstack">
+                    FullStack
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+            {
+                projects.map((x) => (
+                    <CardProject
+                        type={x.type}
+                        title={x.title}
+                        href={x.href}
+                        image={x.image}
+                        tegnologies={x.tegnologies}
+                        className="card-project"
+                    />
+                ))
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const buttons = document.querySelectorAll("button[data-filtro]");
+        const projects = document.querySelectorAll(".card-project");
+
+        buttons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const filtro = btn.getAttribute("data-filtro");
+
+                // Quitar la clase 'filter-btn-active' de todos los botones
+                buttons.forEach((btns) =>
+                    btns.classList.remove("filter-btn-active"),
+                );
+
+                // Agregar la clase 'filter-btn-active' al botón actual
+                btn.classList.add("filter-btn-active");
+
+                projects.forEach((project: any) => {
+                    const tipo = project.getAttribute("data-type");
+
+                    // Mostrar u ocultar según el filtro
+                    if (filtro === "todos" || tipo == filtro) {
+                        project.style.display = "block";
+                    } else {
+                        project.style.display = "none";
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+<style>
+    .buttons-menu {
+        @apply flex justify-start items-center;
+
+        button {
+            @apply border border-secondary border-solid text-primary text-[12px] font-bold;
+            @apply px-4 py-2;
+
+            &:first-child {
+                @apply rounded-l-md;
+            }
+
+            &:last-child {
+                @apply rounded-r-md;
+            }
+        }
+    }
+
+    .filter-btn-active {
+        @apply bg-secondary text-white;
+        color: white !important;
+    }
+</style>

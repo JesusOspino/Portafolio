@@ -1,0 +1,88 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<script type="module">
+    const btnMenu = document.getElementById("btn-menu");
+
+    btnMenu?.addEventListener("click", (e) => {
+        const navMenu = document.getElementById("nav");
+        navMenu.classList.toggle("visible-menu");
+    });
+</script>
+
+<header class="header">
+    <div class="container h-full flex justify-between items-center relative">
+        <!-- <a
+            href="/"
+            class="text-[30px] font-extrabold text-secondary inline-flex"
+        >
+            <span class="text-primary">&#60;</span>
+            Lancelot
+            <span class="text-primary ml-2">&#47;&#62;</span>
+        </a> -->
+
+        <a href="/" class="h-[65px] w-[130px] max-w-[130px] min-w-[130px]">
+            <img
+                src="/images/logos/logo.webp"
+                alt="logo"
+                class="w-full h-full"
+            />
+        </a>
+
+        <nav class="nav" id="nav">
+            <a href="#home" class="menu-active">Inicio</a>
+            <a href="#profile">Perfil</a>
+            <a href="#projects">Proyectos</a>
+            <a href="#services">Servicios</a>
+        </nav>
+
+        <a
+            href="#contact"
+            class="hidden md:flex uppercase tracking-[1.2px] text-white text-[15px] rounded-md bg-secondary hover:bg-primary px-6 py-1.5 font-bold"
+        >
+            Contacto
+        </a>
+
+        <button
+            id="btn-menu"
+            class="flex md:hidden justify-center items-center hover:bg-gray-200 w-[35px] h-[35px] rounded-md"
+        >
+            <Icon name="bars" class="text-2xl text-primary" />
+        </button>
+    </div>
+</header>
+
+<style>
+    .header {
+        @apply w-full h-[70px] fixed bottom-0 left-0 z-[1000] bg-white;
+        @apply md:top-0;
+
+        -webkit-box-shadow: 1px 8px 14px -12px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 1px 8px 14px -12px rgba(0, 0, 0, 0.75);
+        box-shadow: 1px 8px 14px -12px rgba(0, 0, 0, 0.75);
+    }
+
+    .nav {
+        @apply hidden justify-center items-center gap-2 text-primary font-bold text-[16px] absolute bottom-[70px] left-0 bg-white w-full flex-col py-3 rounded-t-lg;
+        @apply md:flex md:flex-row md:relative md:top-0 md:gap-6;
+        @apply transition-all duration-300 ease-linear;
+    }
+
+    .nav a {
+        @apply w-full text-center py-2 hover:bg-secondary hover:text-white;
+        @apply md:hover:bg-transparent md:hover:text-secondary md:w-fit md:py-0;
+    }
+
+    .visible-menu {
+        @apply flex;
+    }
+
+    @media (width <= 768px) {
+        .header, .nav {
+            -webkit-box-shadow: 1px -8px 14px -12px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 1px -8px 14px -12px rgba(0, 0, 0, 0.75);
+            box-shadow: 1px -8px 14px -12px rgba(0, 0, 0, 0.75);
+        }
+    }
+</style>

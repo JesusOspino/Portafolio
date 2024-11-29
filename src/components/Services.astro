@@ -1,0 +1,68 @@
+---
+import CardService from "./Card-service.astro";
+
+const services = [
+    {
+        id: 1,
+        title: "Programación Web",
+        iconName: "code",
+        description:
+            "Desarrollo sitios y aplicaciones Web, te ayudo a construir tu proyecto desde el principio: Frontend, Backend y Bases de Datos.",
+    },
+    {
+        id: 2,
+        title: "Diseño Responsivo",
+        iconName: "phone",
+        description:
+            "Su web se adactará a cualquier dispositivo, sea computadores portátiles o de escritorio, tabletas o teléfonos móviles.",
+    },
+    {
+        id: 3,
+        title: "Diseño web",
+        iconName: "laptop",
+        description:
+            "Prototipo y maqueto tus diseños estáticos, y los convierto en un excelente sitio óptimo para web y dispositivos móviles.",
+    },
+    {
+        id: 4,
+        title: "Bases de Datos",
+        iconName: "database",
+        description:
+            "Te ayudo a administrar y diseñar las bases de datos para hacerlas mas óptimas y fáciles de consultar.",
+    },
+    {
+        id: 5,
+        title: "SEO",
+        iconName: "search",
+        description:
+            "Te ayudo a mejorar el posicionamiento en los principales buscadores, reduciendo el tiempo de carga de las páginas web.",
+    },
+    {
+        id: 6,
+        title: "Consultoria",
+        iconName: "lightbulb",
+        description:
+            "Oriento en el diseño de sistemas, arquitecturas escalables, revisión de código para mejorar rendimiento y seguridad.",
+    },
+];
+---
+
+<div class="flex flex-col gap-3">
+    <div class="container">
+        <div class="content-title">
+            <h5 class="title">¿Que te ofrezco?</h5>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-6">
+            {
+                services.map((x) => (
+                    <CardService
+                        iconName={x.iconName}
+                        title={x.title}
+                        description={x.description}
+                    />
+                ))
+            }
+        </div>
+    </div>
+</div>

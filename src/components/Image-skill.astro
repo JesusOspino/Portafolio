@@ -1,0 +1,18 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+    name: string;
+    src: string;
+    width?: number;
+}
+
+const { name, src, width = 40 } = Astro.props;
+---
+
+<figure class="flex justify-center items-center flex-col gap-2">
+    <Image src={src} alt="Hola" width={width} height="40" />
+    <figcaption class="text-[13px] text-gray-500 font-bold">
+        {name}
+    </figcaption>
+</figure>

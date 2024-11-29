@@ -1,0 +1,103 @@
+---
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+---
+
+<div class="home z-10">
+    <div class="bg">
+        <div
+            class="container flex justify-center items-center h-full relative z-10"
+        >
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="w-full flex justify-center items-center">
+                    <Image
+                        src="/images/me.webp"
+                        alt="imagen"
+                        class="w-[200px] sm:w-[300px] md:w-auto"
+                        width={10}
+                        height={10}
+                    />
+                </div>
+
+                <div class="w-full flex justify-center items-center flex-col">
+                    <h6
+                        class="text-secondary font-extrabold text-[20px] sm:text-[30px] lg:text-[40px] text-center"
+                    >
+                        ¡Hola!
+                    </h6>
+                    <h2
+                        class="text-white text-[30px] sm:text-[40px] lg:text-[55px] font-bold leading-[1.1] text-center whitespace-nowrap"
+                    >
+                        Soy Jesús Ospino
+                    </h2>
+                    <span
+                        class="text-[15px] sm:text-[20px] lg:text-[30px] text-secondary font-extrabold text-center inline-block"
+                        >Desarrollador
+                        <span class="italic">FullStack</span>
+                    </span>
+                    <span
+                        class="text-white text-[10px] sm:text-[15px] lg:text-[20px] font-extrabold text-center whitespace-nowrap"
+                        >Con honor hasta el final</span
+                    >
+                    <a
+                        href="#contact"
+                        class="mt-4 uppercase text-white text-[15px] rounded-md bg-secondary hover:bg-primary px-6 py-1.5 font-bold"
+                    >
+                        Contáctame
+                    </a>
+
+                    <div class="flex justify-center items-center gap-3 mt-4">
+                        <a
+                            target="_blank"
+                            rel="noopener"
+                            class="text-xl"
+                            href="https://www.linkedin.com/in/jesusospino25"
+                        >
+                            <Icon name="linkedin" class="text-white" />
+                        </a>
+                        <a
+                            target="_blank"
+                            rel="noopener"
+                            class="text-xl"
+                            href="https://github.com/JesusOspino"
+                        >
+                            <Icon name="github" class="text-white" />
+                        </a>
+                        <a
+                            target="_blank"
+                            rel="noopener"
+                            class="text-xl"
+                            href="http://www.instagram.com/jesus.ospino25"
+                        >
+                            <Icon name="instagram" class="text-white" />
+                        </a>
+                        <a
+                            target="_blank"
+                            rel="noopener"
+                            class="text-xl"
+                            href="https://www.twitter.com/JesusOspino25"
+                        >
+                            <Icon name="x" class="text-white" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .home {
+        @apply w-full h-full;
+    }
+
+    .home .bg {
+        @apply w-full h-full bg-cover bg-no-repeat relative;
+        background-image: url("/images/home.webp");
+    }
+
+    .home .bg::after {
+        content: "";
+        @apply absolute left-0 top-0 w-full h-full bg-[#000000b9] z-0;
+    }
+</style>

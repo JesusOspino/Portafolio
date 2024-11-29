@@ -1,0 +1,38 @@
+---
+import { ImageSkill } from "../components";
+
+const images = [
+    { key: 1, src: "/images/skills/angular.svg", name: "Angular" },
+    { key: 2, src: "/images/skills/react.svg", name: "React" },
+    { key: 3, src: "/images/skills/next.svg", name: "NextJs" },
+    { key: 4, src: "/images/skills/typescript.svg", name: "TypeScrpt" },
+    { key: 5, src: "/images/skills/javascript.svg", name: "JavaScript" },
+    { key: 6, src: "/images/skills/html5.svg", name: "HTML5" },
+    { key: 7, src: "/images/skills/css.svg", name: "CSS3" },
+    { key: 8, src: "/images/skills/nodejs.svg", name: "NodeJs" },
+    { key: 9, src: "/images/skills/nestjs.svg", name: "NestJs" },
+    { key: 10, src: "/images/skills/csharp.svg", name: "C#" },
+    { key: 11, src: "/images/skills/mysql.svg", name: "MySql" },
+    { key: 12, src: "/images/skills/sql-server.svg", name: "Sql Server" },
+    { key: 13, src: "/images/skills/mongodb.svg", name: "MongoDB", width: 25 },
+    { key: 14, src: "/images/skills/tailwindcss.svg", name: "Tailwind" },
+    { key: 15, src: "/images/skills/aws.svg", name: "AWS" },
+    { key: 16, src: "/images/skills/git.svg", name: "Git" },
+];
+---
+
+<div class="flex flex-col gap-4">
+    <div class="content-title content-title-2">
+        <h5 class="title">Habilidades</h5>
+    </div>
+
+    <div
+        class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-4 gap-3 pt-3 md:px-6 lg:px-10"
+    >
+        {
+            images.map((x) => (
+                <ImageSkill src={x.src} name={x.name} width={x?.width} />
+            ))
+        }
+    </div>
+</div>
