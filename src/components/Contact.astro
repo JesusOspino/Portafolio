@@ -131,6 +131,29 @@ import { Icon } from "astro-icon/components";
                                 Enviar mensaje
                             </button>
                         </div>
+
+                        <div
+                            class="justify-center items-center sm:col-span-2 pt-3 hidden contact-form-loader"
+                        >
+                            <div class="text-center">
+                                <Icon
+                                    name="loader"
+                                    class="text-primary text-2xl"
+                                />
+                            </div>
+                        </div>
+
+                        <div
+                            class="justify-center items-center sm:col-span-2 contact-form-response pt-3 hidden"
+                        >
+                            <h3
+                                class="text-center text-xl text-primary font-bold"
+                            >
+                                ¡Muchas Gracias!
+                                <br />
+                                Por tus comentarios
+                            </h3>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -138,31 +161,43 @@ import { Icon } from "astro-icon/components";
     </div>
 </div>
 
+<style>
+    .loader-message-active {
+        display: flex !important;
+    }
+</style>
+
 <script>
     const $form: any = document.querySelector(".contact-form");
+    const $loader = document.querySelector(".contact-form-loader");
+    const $response = document.querySelector(".contact-form-response");
+    const email = "jesus2515ospino@gmail.com";
 
     $form?.addEventListener("submit", (e: any) => {
         e.preventDefault();
-        //$loader.classList.remove("none");
-        fetch("https://formsubmit.co/ajax/jesus2515ospino@gmail.com", {
+        $loader?.classList.add("loader-message-active");
+        fetch(`https://formsubmit.co/ajax/${email}`, {
             method: "POST",
             body: new FormData(e?.target),
         })
             .then((res) => (res.ok ? res.json() : Promise.reject(res)))
             .then((json) => {
                 console.log(json);
-                location.hash = "#gracias";
+                $response?.classList.add("loader-message-active");
                 $form.reset();
             })
             .catch((err) => {
+                const $contentMsj = document.querySelector(
+                    ".contact-form-response h3",
+                );
                 console.log(err);
                 let msj = err.statusText || "Ocurrió un error al enviar";
-                //$response.querySelector("h3").innerHTML = `Error: ${msj}`;
+                if ($contentMsj) $contentMsj.innerHTML = `Error: ${msj}`;
             })
             .finally(() => {
-                //$loader.classList.add("none");
+                $loader?.classList.remove("loader-message-active");
                 setTimeout(() => {
-                    location.hash = "#cerrar";
+                    $response?.classList.remove("loader-message-active");
                 }, 2000);
             });
     });
