@@ -8,6 +8,5 @@ import icon from 'astro-icon';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://jesusospino.github.io',
-  base: 'Portafolio',
   integrations: [tailwind(), icon({ iconDir: "public/images/icons" })]
 });
