@@ -1,12 +1,18 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
+import tailwindcss from "@tailwindcss/vite";
+import icon from "astro-icon";
 
-import tailwind from '@astrojs/tailwind';
-
-import icon from 'astro-icon';
-
-// https://astro.build/config
 export default defineConfig({
-  site: 'https://jesusospino.github.io',
-  integrations: [tailwind(), icon({ iconDir: "public/images/icons" })]
+  site: "https://jesusospino.github.io",
+
+  vite: {
+    plugins: [tailwindcss()],
+  },
+
+  integrations: [
+    icon({
+      iconDir: "public/images/icons",
+    }),
+  ],
 });

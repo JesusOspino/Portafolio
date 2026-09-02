@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #04513c;
+  --color-secondary: #84cb27;
+
+  --breakpoint-ss: 450px;
+
+  --font-montserrat: "Montserrat", sans-serif;
+}
+
+@font-face {
+  font-family: Montserrat;
+  src: url("/fonts/Montserrat-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Montserrat, sans-serif;
+}
