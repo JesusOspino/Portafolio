@@ -1,0 +1,177 @@
+---
+import { Icon } from "astro-icon/components";
+import { tags } from "../../helpers/tagsList";
+import type { Project } from "../../data/projects";
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+---
+
+<div
+  id="post-modal"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-black/85 p-0 backdrop-blur-sm sm:p-6"
+>
+  <div
+    class="relative flex max-h-full w-full max-w-4xl flex-col overflow-y-auto rounded-none bg-white shadow-2xl ring-1 ring-black/5 sm:max-h-[90vh] sm:flex-row sm:overflow-hidden sm:rounded-2xl dark:bg-neutral-900 dark:ring-white/10"
+  >
+    <button
+      id="post-modal-close"
+      type="button"
+      aria-label="Cerrar"
+      class="absolute top-3 right-3 z-10 grid size-9 cursor-pointer place-items-center rounded-full bg-black/60 text-white backdrop-blur transition hover:bg-black/80"
+    >
+      <Icon name="close" class="size-5" />
+    </button>
+
+    {
+      projects.map((project) => (
+        <article
+          data-modal-content={project.id}
+          class="hidden w-full sm:flex"
+        >
+          <div class="flex items-center justify-center bg-neutral-100 sm:w-1/2 dark:bg-black">
+            <img
+              src={project.image}
+              alt={project.title}
+              class="max-h-72 w-full object-contain p-8 sm:max-h-full"
+            />
+          </div>
+
+          <div class="flex flex-col sm:w-1/2">
+            <header class="flex items-center gap-3 border-b border-neutral-200 p-4 dark:border-neutral-700/70">
+              <img
+                src="/images/me.webp"
+                alt="Jesús Ospino"
+                class="size-8 rounded-full object-cover"
+              />
+              <div class="leading-tight">
+                <p class="text-sm font-semibold">{project.title}</p>
+                <p class="text-xs text-neutral-500 dark:text-neutral-400">
+                  {project.date}
+                </p>
+              </div>
+            </header>
+
+            <div class="flex-1 space-y-4 overflow-y-auto p-4">
+              <p class="text-sm leading-relaxed">{project.description}</p>
+
+              <ul class="flex flex-wrap gap-2">
+                {project.tags.map((tagKey) => (
+                  <li class="flex items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-100 px-3 py-1 text-xs font-medium dark:border-neutral-700 dark:bg-neutral-800">
+                    <img
+                      src={tags[tagKey].image}
+                      alt={tags[tagKey].title}
+                      class="size-3.5"
+                    />
+                    {tags[tagKey].title}
+                  </li>
+                ))}
+              </ul>
+
+              <div class="flex gap-3 pt-2">
+                {project.demoUrl && project.demoUrl !== "#" && (
+                  <a
+                    href={project.demoUrl}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    class="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-white transition hover:opacity-90"
+                  >
+                    <Icon name="external-link" class="size-3.5" />
+                    Ver demo
+                  </a>
+                )}
+                {project.githubUrl && project.githubUrl !== "#" && (
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    class="flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-neutral-100 px-3 py-1.5 text-xs font-semibold transition hover:bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-700"
+                  >
+                    <Icon name="github" class="size-3.5" />
+                    Código
+                  </a>
+                )}
+              </div>
+            </div>
+
+            <footer class="flex items-center gap-4 border-t border-neutral-200 p-4 dark:border-neutral-700/70">
+              <button
+                type="button"
+                data-like-button
+                aria-pressed="false"
+                class="group cursor-pointer text-neutral-700 transition hover:scale-110 dark:text-neutral-200"
+              >
+                <Icon name="heart" class="size-6 group-aria-[pressed=true]:hidden" />
+                <Icon
+                  name="heart-filled"
+                  class="hidden size-6 text-red-500 group-aria-[pressed=true]:block"
+                />
+              </button>
+              <Icon name="message-circle" class="size-6" />
+              <Icon name="send" class="size-6" />
+              <span class="ml-auto text-sm font-semibold">
+                {project.likes} me gusta
+              </span>
+            </footer>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById("post-modal");
+  const closeButton = document.getElementById("post-modal-close");
+  const contents = document.querySelectorAll<HTMLElement>(
+    "[data-modal-content]",
+  );
+
+  function openModal(id: string) {
+    contents.forEach((content) => {
+      content.classList.toggle("hidden", content.dataset.modalContent !== id);
+      content.classList.toggle(
+        "sm:flex",
+        content.dataset.modalContent === id,
+      );
+    });
+    modal?.classList.remove("hidden");
+    modal?.classList.add("flex");
+    document.body.classList.add("overflow-hidden");
+  }
+
+  function closeModal() {
+    modal?.classList.add("hidden");
+    modal?.classList.remove("flex");
+    document.body.classList.remove("overflow-hidden");
+  }
+
+  document.querySelectorAll<HTMLButtonElement>("[data-open-post]").forEach(
+    (button) => {
+      button.addEventListener("click", () => {
+        const id = button.dataset.openPost;
+        if (id) openModal(id);
+      });
+    },
+  );
+
+  closeButton?.addEventListener("click", closeModal);
+  modal?.addEventListener("click", (event) => {
+    if (event.target === modal) closeModal();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeModal();
+  });
+
+  modal
+    ?.querySelectorAll<HTMLButtonElement>("[data-like-button]")
+    .forEach((button) => {
+      button.addEventListener("click", () => {
+        const pressed = button.getAttribute("aria-pressed") === "true";
+        button.setAttribute("aria-pressed", String(!pressed));
+      });
+    });
+</script>

@@ -1,0 +1,41 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<nav
+  class="fixed inset-x-0 bottom-0 z-40 flex h-14 items-center justify-around border-t border-neutral-200 bg-white/95 backdrop-blur sm:hidden dark:border-neutral-800 dark:bg-black/95"
+>
+  <a
+    href="#top"
+    aria-label="Inicio"
+    class="grid size-10 cursor-pointer place-items-center rounded-full text-neutral-700 transition hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+  >
+    <Icon name="home" class="size-6" />
+  </a>
+  <button
+    id="bottom-nav-favorites"
+    type="button"
+    aria-label="Favoritos"
+    class="grid size-10 cursor-pointer place-items-center rounded-full text-neutral-700 transition hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+  >
+    <Icon name="heart" class="size-6" />
+  </button>
+  <a
+    href="#profile"
+    aria-label="Perfil"
+    class="grid size-10 cursor-pointer place-items-center rounded-full text-neutral-700 transition hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+  >
+    <Icon name="user" class="size-6" />
+  </a>
+</nav>
+
+<script>
+  document
+    .getElementById("bottom-nav-favorites")
+    ?.addEventListener("click", () => {
+      document.getElementById("tab-favorites")?.click();
+      document
+        .getElementById("tabs")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+</script>

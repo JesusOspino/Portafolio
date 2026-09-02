@@ -1,0 +1,23 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<button
+  id="theme-toggle"
+  type="button"
+  aria-label="Cambiar tema"
+  class="grid size-9 cursor-pointer place-items-center rounded-full text-neutral-700 transition hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+>
+  <Icon name="sun" class="hidden size-5 dark:block" />
+  <Icon name="moon" class="block size-5 dark:hidden" />
+</button>
+
+<script>
+  const STORAGE_KEY = "theme";
+  const button = document.getElementById("theme-toggle");
+
+  button?.addEventListener("click", () => {
+    const isDark = document.documentElement.classList.toggle("dark");
+    localStorage.setItem(STORAGE_KEY, isDark ? "dark" : "light");
+  });
+</script>

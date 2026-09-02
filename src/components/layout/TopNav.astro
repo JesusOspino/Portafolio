@@ -1,0 +1,27 @@
+---
+import { Icon } from "astro-icon/components";
+import ThemeToggle from "../ui/ThemeToggle.astro";
+import NotificationBell from "../ui/NotificationBell.astro";
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-neutral-200 bg-white/90 backdrop-blur dark:border-neutral-800 dark:bg-black/90"
+>
+  <div class="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
+    <a href="#top" class="text-lg font-semibold tracking-tight">
+      Portafolio
+    </a>
+
+    <div class="flex items-center gap-1">
+      <a
+        href="#tabs"
+        aria-label="Buscar proyectos"
+        class="hidden size-9 place-items-center rounded-full text-neutral-700 transition hover:bg-neutral-100 sm:grid dark:text-neutral-200 dark:hover:bg-neutral-800"
+      >
+        <Icon name="search" class="size-5" />
+      </a>
+      <NotificationBell />
+      <ThemeToggle />
+    </div>
+  </div>
+</header>

@@ -2,9 +2,10 @@
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import icon from "astro-icon";
+import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  site: "https://jesusospino.github.io",
+  site: "https://jesusospino.druly.app",
 
   vite: {
     plugins: [tailwindcss()],
@@ -14,5 +15,6 @@ export default defineConfig({
     icon({
       iconDir: "public/images/icons",
     }),
+    sitemap(),
   ],
 });

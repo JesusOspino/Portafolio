@@ -1,0 +1,31 @@
+---
+import { Icon } from "astro-icon/components";
+import { socialLinks } from "../../data/social";
+
+const year = new Date().getFullYear();
+---
+
+<footer
+  class="mt-12 border-t border-neutral-200 pb-20 sm:pb-8 dark:border-neutral-800"
+>
+  <div
+    class="mx-auto flex max-w-5xl flex-col items-center gap-4 px-4 py-8 text-sm text-neutral-500 dark:text-neutral-400"
+  >
+    <div class="flex items-center gap-3">
+      {
+        socialLinks.map((link) => (
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noreferrer noopener"
+            aria-label={link.label}
+            class="grid size-9 place-items-center rounded-full text-neutral-600 transition hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white"
+          >
+            <Icon name={link.icon} class="size-4" />
+          </a>
+        ))
+      }
+    </div>
+    <p>&copy; {year} Jesús Ospino. Todos los derechos reservados.</p>
+  </div>
+</footer>

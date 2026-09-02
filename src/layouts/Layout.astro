@@ -1,26 +1,92 @@
 ---
-import Header from "../components/Header.astro";
+import { TopNav, BottomNav, Footer, FloatingMessageButton } from "../components";
+import { profile } from "../data/profile";
+import { socialLinks } from "../data/social";
 import "../styles/global.css";
 
 interface Props {
   title: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
 }
 
-const { title } = Astro.props;
+const {
+  title,
+  description = `Portafolio de ${profile.name}, ${profile.role}. Descubre mis proyectos, habilidades y cómo contactarme.`,
+  image = profile.avatar,
+  noindex = false,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL(image, Astro.site);
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: profile.name,
+  alternateName: profile.username,
+  jobTitle: profile.role,
+  url: Astro.site?.toString(),
+  image: ogImageURL.toString(),
+  address: {
+    "@type": "PostalAddress",
+    addressCountry: profile.location,
+  },
+  sameAs: socialLinks
+    .filter((link) => link.url && !link.url.startsWith("#"))
+    .map((link) => link.url),
+};
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Portafolio de Jesus Ospino" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/webp" href="/images/logos/icon-f.webp" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={profile.name} />
+    <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <link rel="icon" type="image/webp" href="/images/logos/icon-f.webp" />
+    <link rel="apple-touch-icon" href="/images/logos/icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#04513c" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content={profile.name} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} is:inline />
+
+    <script is:inline>
+      const stored = localStorage.getItem("theme");
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
+      if (stored === "dark" || (!stored && prefersDark)) {
+        document.documentElement.classList.add("dark");
+      }
+    </script>
   </head>
   <body>
-    <Header />
+    <TopNav />
     <slot />
+    <Footer />
+    <FloatingMessageButton />
+    <BottomNav />
   </body>
 </html>

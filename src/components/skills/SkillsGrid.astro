@@ -1,0 +1,26 @@
+---
+import { tags } from "../../helpers/tagsList";
+
+interface Props {
+  panelId: string;
+  active?: boolean;
+}
+
+const { panelId, active = false } = Astro.props;
+const skillsList = Object.values(tags);
+---
+
+<div data-tab-panel={panelId} class:list={[{ hidden: !active }]}>
+  <ul class="grid grid-cols-3 gap-3 p-4 ss:grid-cols-4 sm:grid-cols-5">
+    {
+      skillsList.map((skill) => (
+        <li class="flex flex-col items-center gap-2 rounded-xl border border-neutral-200 p-4 dark:border-neutral-800">
+          <img src={skill.image} alt={skill.title} class="size-8" />
+          <span class="text-center text-xs font-medium text-neutral-600 dark:text-neutral-300">
+            {skill.title}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+</div>

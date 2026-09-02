@@ -1,0 +1,29 @@
+---
+import type { Project } from "../../data/projects";
+import PostCard from "./PostCard.astro";
+
+interface Props {
+  projects: Project[];
+  panelId: string;
+  active?: boolean;
+  emptyMessage?: string;
+}
+
+const { projects, panelId, active = false, emptyMessage } = Astro.props;
+---
+
+<div data-tab-panel={panelId} class:list={[{ hidden: !active }]}>
+  {
+    projects.length > 0 ? (
+      <div class="grid grid-cols-3 gap-px sm:gap-0.5">
+        {projects.map((project) => (
+          <PostCard project={project} />
+        ))}
+      </div>
+    ) : (
+      <p class="px-4 py-12 text-center text-sm text-neutral-500 dark:text-neutral-400">
+        {emptyMessage ?? "Aún no hay publicaciones aquí."}
+      </p>
+    )
+  }
+</div>

@@ -1,0 +1,92 @@
+---
+import { Icon } from "astro-icon/components";
+import { notifications } from "../../data/notifications";
+---
+
+<div class="relative">
+  <button
+    id="notif-toggle"
+    type="button"
+    aria-label="Notificaciones"
+    aria-expanded="false"
+    class="relative grid size-9 cursor-pointer place-items-center rounded-full text-neutral-700 transition hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+  >
+    <Icon name="bell" class="size-5" />
+    {
+      notifications.length > 0 && (
+        <span class="absolute top-1.5 right-1.5 size-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-black" />
+      )
+    }
+  </button>
+
+  <div
+    id="notif-panel"
+    class="absolute right-0 top-12 z-50 hidden w-80 max-w-[90vw] overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-2xl dark:border-neutral-700 dark:bg-neutral-900"
+  >
+    <div class="border-b border-neutral-200 px-4 py-3 dark:border-neutral-800">
+      <p class="text-sm font-semibold">Notificaciones</p>
+    </div>
+    <ul class="max-h-96 overflow-y-auto">
+      {
+        notifications.length > 0 ? (
+          notifications.map((notification) => (
+            <li class="flex gap-3 border-b border-neutral-100 px-4 py-3 last:border-0 dark:border-neutral-800">
+              <span class="grid size-9 shrink-0 place-items-center rounded-full bg-primary/10 text-primary dark:bg-secondary/10 dark:text-secondary">
+                <Icon name="award" class="size-4" />
+              </span>
+              <div class="min-w-0">
+                <p class="text-sm font-medium">{notification.title}</p>
+                <p class="text-xs text-neutral-500 dark:text-neutral-400">
+                  {notification.description}
+                </p>
+                <p class="mt-1 text-[11px] text-neutral-400 dark:text-neutral-500">
+                  {notification.time}
+                </p>
+              </div>
+            </li>
+          ))
+        ) : (
+          <li class="px-4 py-8 text-center text-sm text-neutral-500 dark:text-neutral-400">
+            Sin notificaciones nuevas.
+          </li>
+        )
+      }
+    </ul>
+  </div>
+</div>
+
+<script>
+  const toggle = document.getElementById("notif-toggle");
+  const panel = document.getElementById("notif-panel");
+
+  function close() {
+    panel?.classList.add("hidden");
+    toggle?.setAttribute("aria-expanded", "false");
+  }
+
+  function open() {
+    panel?.classList.remove("hidden");
+    toggle?.setAttribute("aria-expanded", "true");
+  }
+
+  toggle?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    const isOpen = toggle.getAttribute("aria-expanded") === "true";
+    if (isOpen) {
+      close();
+    } else {
+      open();
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!panel || panel.classList.contains("hidden")) return;
+    const target = event.target as Node;
+    if (panel.contains(target) || toggle?.contains(target)) return;
+    close();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") close();
+  });
+</script>

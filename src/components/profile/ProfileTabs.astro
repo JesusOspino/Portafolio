@@ -1,0 +1,60 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Tab {
+  id: string;
+  label: string;
+  icon: string;
+}
+
+const tabsList: Tab[] = [
+  { id: "posts", label: "Publicaciones", icon: "grid" },
+  { id: "favorites", label: "Favoritos", icon: "bookmark" },
+  { id: "skills", label: "Habilidades", icon: "code" },
+];
+---
+
+<nav
+  id="tabs"
+  class="mx-auto mt-6 flex max-w-5xl scroll-mt-16 justify-around border-t border-neutral-200 dark:border-neutral-800"
+>
+  {
+    tabsList.map((tab, index) => (
+      <button
+        id={`tab-${tab.id}`}
+        type="button"
+        data-tab-trigger={tab.id}
+        aria-selected={index === 0 ? "true" : "false"}
+        class="flex flex-1 cursor-pointer items-center justify-center gap-1.5 border-t-2 py-3 text-xs font-semibold tracking-widest uppercase transition hover:text-neutral-600 dark:hover:text-neutral-300 aria-selected:border-neutral-900 aria-selected:text-neutral-900 dark:aria-selected:border-white dark:aria-selected:text-white border-transparent text-neutral-400"
+      >
+        <Icon name={tab.icon} class="size-4" />
+        <span class="hidden ss:inline">{tab.label}</span>
+      </button>
+    ))
+  }
+</nav>
+
+<script>
+  const triggers = document.querySelectorAll<HTMLButtonElement>(
+    "[data-tab-trigger]",
+  );
+  const panels = document.querySelectorAll<HTMLElement>("[data-tab-panel]");
+
+  function activate(tabId: string) {
+    triggers.forEach((trigger) => {
+      trigger.setAttribute(
+        "aria-selected",
+        String(trigger.dataset.tabTrigger === tabId),
+      );
+    });
+    panels.forEach((panel) => {
+      panel.classList.toggle("hidden", panel.dataset.tabPanel !== tabId);
+    });
+  }
+
+  triggers.forEach((trigger) => {
+    trigger.addEventListener("click", () => {
+      activate(trigger.dataset.tabTrigger ?? "posts");
+    });
+  });
+</script>

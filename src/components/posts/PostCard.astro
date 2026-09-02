@@ -1,0 +1,35 @@
+---
+import { Icon } from "astro-icon/components";
+import type { Project } from "../../data/projects";
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<button
+  type="button"
+  data-open-post={project.id}
+  class="group relative aspect-square cursor-pointer overflow-hidden bg-neutral-100 dark:bg-neutral-900"
+>
+  <img
+    src={project.image}
+    alt={project.title}
+    loading="lazy"
+    class="size-full object-cover p-4 transition duration-300 group-hover:scale-105"
+  />
+  <div
+    class="absolute inset-0 hidden items-center justify-center gap-6 bg-black/50 text-white opacity-0 transition group-hover:opacity-100 sm:flex"
+  >
+    <span class="flex items-center gap-1.5 font-semibold">
+      <Icon name="heart-filled" class="size-5" />
+      {project.likes}
+    </span>
+    <span class="flex items-center gap-1.5 font-semibold">
+      <Icon name="message-circle" class="size-5" />
+      {project.comments}
+    </span>
+  </div>
+</button>

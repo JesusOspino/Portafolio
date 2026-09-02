@@ -1,7 +1,38 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import {
+  ProfileHeader,
+  HighlightsBar,
+  ProfileTabs,
+  PostGrid,
+  PostModal,
+  SkillsGrid,
+} from "../components";
+import { projects } from "../data/projects";
+import { profile } from "../data/profile";
+
+const favoriteProjects = projects.filter((project) => project.favorite);
+
+const title = `${profile.name} | ${profile.role} — Portafolio`;
+const description = `Portafolio de ${profile.name}, ${profile.role} en ${profile.location}. Explora mis proyectos, habilidades y contáctame para trabajar juntos.`;
 ---
 
-<Layout title="Portafolio Jesus Ospino">
-  <main>jesus</main>
+<Layout title={title} description={description}>
+  <main id="top">
+    <ProfileHeader />
+    <HighlightsBar />
+    <ProfileTabs />
+
+    <section class="mx-auto max-w-5xl">
+      <PostGrid projects={projects} panelId="posts" active />
+      <PostGrid
+        projects={favoriteProjects}
+        panelId="favorites"
+        emptyMessage="Aún no hay proyectos destacados."
+      />
+      <SkillsGrid panelId="skills" />
+    </section>
+  </main>
+
+  <PostModal projects={projects} />
 </Layout>

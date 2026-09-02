@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary: #04513c;
   --color-secondary: #84cb27;
@@ -21,4 +23,14 @@ html {
 
 body {
   font-family: Montserrat, sans-serif;
+  @apply bg-white text-neutral-900 dark:bg-black dark:text-neutral-100;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

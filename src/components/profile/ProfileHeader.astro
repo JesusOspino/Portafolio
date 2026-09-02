@@ -1,0 +1,162 @@
+---
+import { Icon } from "astro-icon/components";
+import { profile } from "../../data/profile";
+import { socialLinks } from "../../data/social";
+
+const stats = [
+  { label: "Publicaciones", value: profile.stats.posts },
+  { label: "Años exp.", value: profile.stats.experience },
+  { label: "Tecnologías", value: profile.stats.technologies },
+];
+
+const linkedin = socialLinks.find((link) => link.id === "linkedin");
+---
+
+<section id="profile" class="mx-auto max-w-5xl scroll-mt-16 px-4 pt-8">
+  <div class="flex items-start gap-6 sm:gap-12">
+    <img
+      src={profile.avatar}
+      alt={profile.name}
+      class="size-20 shrink-0 rounded-full object-cover ring-2 ring-primary/20 sm:size-36"
+    />
+
+    <div class="flex-1">
+      <div class="flex flex-wrap items-center gap-1.5">
+        <p class="text-xl font-semibold">{profile.username}</p>
+        <Icon name="verified" class="size-5 shrink-0" title="Cuenta verificada" />
+      </div>
+
+      <ul class="mt-4 hidden gap-8 sm:flex">
+        {
+          stats.map((stat) => (
+            <li class="flex items-baseline gap-1.5">
+              <span class="font-semibold">{stat.value}</span>
+              <span class="text-neutral-500 dark:text-neutral-400">
+                {stat.label}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <h1 class="font-semibold">{profile.name}</h1>
+    <p class="text-sm text-neutral-500 dark:text-neutral-400">
+      {profile.role} · {profile.location}
+    </p>
+    {
+      profile.bio.map((line) => (
+        <p class="text-sm leading-relaxed">{line}</p>
+      ))
+    }
+    {
+      linkedin && (
+        <a
+          href={linkedin.url}
+          target="_blank"
+          rel="noreferrer noopener"
+          class="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition hover:underline dark:text-secondary"
+        >
+          <Icon name="linkedin" class="size-3.5" />
+          linkedin.com/in/{profile.username}
+          <Icon name="external-link" class="size-3" />
+        </a>
+      )
+    }
+  </div>
+
+  <div class="mt-4 flex gap-2">
+    <a
+      href={profile.cvUrl}
+      target="_blank"
+      rel="noreferrer noopener"
+      class="flex-1 cursor-pointer rounded-lg bg-neutral-100 py-1.5 text-center text-sm font-semibold transition hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700"
+    >
+      Descargar CV
+    </a>
+    <a
+      href={profile.contactEmail}
+      class="flex-1 cursor-pointer rounded-lg bg-neutral-100 py-1.5 text-center text-sm font-semibold transition hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700"
+    >
+      Mensaje
+    </a>
+    <button
+      type="button"
+      id="share-profile-btn"
+      data-copied="false"
+      aria-label="Compartir perfil"
+      class="group grid size-9 shrink-0 cursor-pointer place-items-center rounded-lg bg-neutral-100 transition hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700"
+    >
+      <Icon name="share" class="size-4 group-data-[copied=true]:hidden" />
+      <Icon
+        name="check"
+        class="hidden size-4 text-secondary group-data-[copied=true]:block"
+      />
+    </button>
+  </div>
+
+  <ul
+    class="mt-4 flex justify-around border-y border-neutral-200 py-3 sm:hidden dark:border-neutral-800"
+  >
+    {
+      stats.map((stat) => (
+        <li class="flex flex-col items-center">
+          <span class="font-semibold">{stat.value}</span>
+          <span class="text-xs text-neutral-500 dark:text-neutral-400">
+            {stat.label}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<script>
+  const shareButton =
+    document.querySelector<HTMLButtonElement>("#share-profile-btn");
+
+  async function copyToClipboard(text: string) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand("copy");
+        return true;
+      } catch {
+        return false;
+      } finally {
+        textarea.remove();
+      }
+    }
+  }
+
+  shareButton?.addEventListener("click", async () => {
+    const shareData = { title: document.title, url: window.location.href };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch {
+        // El usuario canceló el diálogo de compartir; no hacer nada.
+      }
+      return;
+    }
+
+    const copied = await copyToClipboard(shareData.url);
+    if (copied) {
+      shareButton.dataset.copied = "true";
+      setTimeout(() => {
+        shareButton.dataset.copied = "false";
+      }, 2000);
+    }
+  });
+</script>
