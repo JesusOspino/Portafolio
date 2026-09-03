@@ -3,7 +3,7 @@ frontend:
   phases:
     preBuild:
       commands:
-        - nvm use 20 || nvm install 20
+        - nvm use 24 || nvm install 24
         - corepack enable
         - pnpm config set store-dir .pnpm-store
         - pnpm install --frozen-lockfile
