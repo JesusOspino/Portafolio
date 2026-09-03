@@ -1,18 +1,20 @@
-name: Deploy to GitHub Pages
+name: CI Build Check
 
 on:
-  # Activa el flujo de trabajo cada vez que hagas push a la rama `main`
-  # Usando un nombre de rama diferente? Reemplaza `main` con el nombre de tu rama
+  # Valida que el sitio compila en cada push a `main`
   push:
+    branches: [ main ]
+  # Construye (sin publicar) en cada Pull Request como validación de CI
+  pull_request:
     branches: [ main ]
   # Te permite ejecutar este flujo de trabajo manualmente desde la pestaña Acciones en GitHub.
   workflow_dispatch:
 
-# Permite que este trabajo clone el repositorio y cree un despliegue de página
+# El despliegue real lo hace AWS Amplify (ver amplify.yml), que se dispara
+# automáticamente desde la consola de Amplify al detectar el push a `main`.
+# Este workflow solo sirve como chequeo de CI (build) y no publica nada.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 jobs:
   build:
@@ -20,20 +22,19 @@ jobs:
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v4
-      - name: Install, build, and upload your site
-        uses: withastro/action@v3
-        # with:
-          # path: . # La ubicación raíz de tu proyecto de Astro dentro del repositorio. (opcional)
-          # node-version: 20 # La versión específica de Node que debería usarse para construir tu sitio. Por defecto es 20. (opcional)
-          # package-manager: pnpm@latest # El gestor de paquetes de Node que debería usarse para instalar dependencias y construir tu sitio. Detectado automáticamente basado en tu lockfile. (opcional)
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        # La versión de pnpm se toma del campo "packageManager" de package.json
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build site
+        run: pnpm run build
